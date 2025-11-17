@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "k2d"
+version = "0.1.0"
+description = "Key to Door Reinforcement Learning Environment"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "gymnasium>=0.28.0",
+    "numpy>=1.21.0",
+    "stable-baselines3>=2.0.0",
+    "torch>=1.13.0",
+    "tqdm>=4.64.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=22.0.0",
+    "flake8>=4.0.0",
+]
+
+[tool.setuptools]
+packages = ["env", "models", "models.ppo"]
+
+[tool.setuptools.package-dir]
+"" = "src"
+
