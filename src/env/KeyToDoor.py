@@ -111,6 +111,20 @@ class KeyToDoorEnv(gym.Env):
 
         return self._get_obs(), reward, terminated, truncated, {}
 
+    def print_action(action):
+        action_str = ""
+        if action == 0:      # up
+            action_str = "up"
+        elif action == 1:    # down
+            action_str = "down"
+        elif action == 2:    # left
+            action_str = "left"
+        elif action == 3:    # right
+            action_str = "right"
+        elif action == 4:    # pick key
+            action_str = "pick up key"
+        print("agent's action is: ", action_str)
+        
     def render(self):
         if self.render_mode != "human":
             return
