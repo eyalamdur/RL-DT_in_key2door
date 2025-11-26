@@ -28,5 +28,5 @@ def evaluate_model (env: gym.Env, model, max_episode_length = 30):
 if __name__ == "__main__":
     env = k2d()
     model_path = "results/models/PPO/ppo_1"
-    model = load_ppo(model_path)  # Load the model on CPU
+    model = load_ppo(model_path)
     evaluate_model(env, model)

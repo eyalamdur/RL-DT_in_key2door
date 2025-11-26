@@ -1,0 +1,13 @@
+{
+    "policy": "MultiInputPolicy",
+    "device": "cpu",
+    "learning_rate": 3e-4,
+    "n_steps": 4096,
+    "batch_size": 256,
+    "n_epochs": 20,
+    "gamma": 0.995,
+    "gae_lambda": 0.97,
+    "ent_coef": 0.001,
+    "verbose": 0,
+    "total_timesteps": 1000
+}
