@@ -111,6 +111,7 @@ class KeyToDoorEnv(gym.Env):
 
         return self._get_obs(), reward, terminated, truncated, {}
 
+    @staticmethod
     def print_action(action):
         action_str = ""
         if action == 0:      # up

@@ -49,5 +49,5 @@ def load_ppo(model_path: str) -> PPO:
     Returns:
         agent (PPO): The loaded PPO agent.
     """
-    model = PPO.load(model_path, device="cpu")  # Load the model on CPU
+    model = PPO.load(model_path, device="cpu")
     return model
