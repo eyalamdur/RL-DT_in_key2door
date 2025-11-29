@@ -1,0 +1,6 @@
+{
+  "models": [
+        ["ppo", "results/models/PPO/ppo_1"]
+  ],
+  "grid_size": 9
+}
