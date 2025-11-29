@@ -8,6 +8,77 @@ from datetime import datetime
 from tqdm import trange
 from typing import List, Dict, Optional
 from stable_baselines3.common.base_class import BaseAlgorithm  # parent of PPO, TD3, etc.
+import logging
+import sys
+import json
+import argparse
+
+# -------------------------------------------- Logging & Config Utilities -------------------------------------------- #
+def configure_logging(level=logging.INFO):
+    """
+    Configure logging to stream to stdout.
+    This ensures SLURM captures logs in .out files instead of .err files.
+    """
+    logging.basicConfig(
+        level=level, 
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        handlers=[
+            logging.StreamHandler(sys.stdout)
+        ],
+        force=True # Force reconfiguration if already configured
+    )
+
+def load_config(config_path):
+    """Load configuration from JSON file"""
+    try:
+        with open(config_path, 'r') as f:
+            config = json.load(f)
+        return config
+    except FileNotFoundError:
+        raise FileNotFoundError(f"Configuration file not found: {config_path}")
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Invalid JSON in configuration file: {e}")
+
+def get_config_from_args(description="K2D Script", default_config_path="src/config/config.json", custom_args_setup=None):
+    """
+    Parse command line arguments and load configuration.
+    
+    Args:
+        description (str): Description for argparse.
+        default_config_path (str): Default path for configuration file.
+        custom_args_setup (callable): Function to add custom arguments to parser.
+                                      Signature: custom_args_setup(parser)
+    
+    Returns:
+        dict: The final configuration dictionary.
+    """
+    parser = argparse.ArgumentParser(description=description)
+    
+    # Configuration file option
+    parser.add_argument('--config', type=str, default=default_config_path,
+                        help='Path to JSON configuration file (overrides all other arguments)')
+    
+    # Allow adding custom arguments
+    if custom_args_setup:
+        custom_args_setup(parser)
+    
+    args = parser.parse_args()
+    
+    # Load config file if present
+    config = {}
+    if args.config and os.path.exists(args.config):
+        config = load_config(args.config)
+        logging.info(f"Loaded config from {args.config}")
+    else:
+        logging.warning(f"Config file not found or not provided: {args.config}. Using defaults/CLI args only.")
+    
+    # Override config with CLI arguments (excluding 'config' itself)
+    final_config = config.copy()
+    for key, value in args.__dict__.items():
+        if value is not None and key != 'config':
+            final_config[key] = value
+            
+    return final_config
 
 # -------------------------------------------- Environment Utilities -------------------------------------------- #
 def create_environment(env_name : str, entry_point : str) -> gym.Env:
@@ -290,4 +361,8 @@ def color_print(text: str, color: str = "blue") -> None:
         "yellow": "\033[93m",
         "reset": "\033[0m"
     }
-    print(f"{colors.get(color, colors['blue'])}{text}{colors['reset']}")
+    # Use logging info if configured, otherwise print
+    if logging.getLogger().hasHandlers():
+        logging.info(text)
+    else:
+        print(f"{colors.get(color, colors['blue'])}{text}{colors['reset']}")

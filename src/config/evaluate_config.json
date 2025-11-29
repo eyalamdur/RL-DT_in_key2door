@@ -1,6 +1,6 @@
 {
-    "models": [
+  "models": [
         ["ppo", "results/models/PPO/ppo_1"]
-    ],
-    "max_episode_length": 30
+  ],
+  "grid_size": 9
 }

@@ -128,7 +128,7 @@ class KeyToDoorEnv(gym.Env):
         print("agent's action is: ", action_str)
         
     def render(self):
-        if self.render_mode != "human":
+        if self.render_mode != "human" or self.room == 3:
             return
 
         # Create empty grid
@@ -147,7 +147,7 @@ class KeyToDoorEnv(gym.Env):
         grid[ax][ay] = " A "
 
         # Dynamic horizontal separator
-        row_border = "+" + "+".join(["----"] * self.grid_size) + "+"
+        row_border = "+" + "+".join(["---"] * self.grid_size) + "+"
 
         # Print
         print(f"Room {self.room} | has_key={self.has_key}")

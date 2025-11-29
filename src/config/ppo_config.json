@@ -1,13 +1,18 @@
 {
-    "policy": "MultiInputPolicy",
-    "device": "cpu",
-    "learning_rate": 3e-4,
-    "n_steps": 4096,
-    "batch_size": 256,
-    "n_epochs": 20,
-    "gamma": 0.995,
-    "gae_lambda": 0.97,
-    "ent_coef": 0.001,
-    "verbose": 0,
-    "total_timesteps": 1000
+    "env": {
+        "grid_size": 9
+    },
+    "ppo": {
+        "policy": "MultiInputPolicy",
+        "device": "cpu",
+        "learning_rate": 0.0003,
+        "n_steps": 2048,
+        "batch_size": 64,
+        "n_epochs": 10,
+        "gamma": 0.99,
+        "gae_lambda": 0.95,
+        "ent_coef": 0.01,
+        "verbose": 1,
+        "total_timesteps": 1000000
+    }
 }

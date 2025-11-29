@@ -8,7 +8,7 @@
 #SBATCH --mem=8G
 
 # --- Email notifications ---
-#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=eyal.amdur@campus.technion.ac.il
 
 # Activate environment
