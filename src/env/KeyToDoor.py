@@ -14,7 +14,7 @@ class KeyToDoorEnv(gym.Env):
     3-room grid-based Key-to-Door environment.
 
     Rooms:
-      - Room 0: key at (self.grid_size-1,self.grid_size/2)
+      - Room 0: key at random position
       - Room 1: empty
       - Room 2: door at (0,self.grid_size/2)
 
@@ -44,6 +44,7 @@ class KeyToDoorEnv(gym.Env):
             "room": spaces.Discrete(3),
             "pos": spaces.Box(low=0, high=n-1, shape=(2,), dtype=np.int32),
             "has_key": spaces.Discrete(2),
+            "key_pos": spaces.Box(low=0, high=n-1, shape=(2,), dtype=np.int32)
         })
 
         self.action_space = spaces.Discrete(5)
@@ -58,6 +59,7 @@ class KeyToDoorEnv(gym.Env):
         self.room = None
         self.pos = None
         self.has_key = None
+        self.key_pos = None
         self.room_steps = None
 
     def _get_obs(self):
@@ -67,6 +69,7 @@ class KeyToDoorEnv(gym.Env):
             "room": np.int32(room),
             "pos": self.pos.copy(),
             "has_key": np.int32(self.has_key),
+            "key_pos": self.key_pos.copy(),
         }
 
     def reset(self, *, seed=None, options=None):
@@ -75,6 +78,11 @@ class KeyToDoorEnv(gym.Env):
         self.pos = np.array([self.grid_size - 1, 0], dtype=np.int32)
         self.has_key = 0
         self.room_steps = 0
+        # put the key in a random place in the room
+        self.key_pos = np.array([
+            self.np_random.integers(0, self.grid_size),
+            self.np_random.integers(0, self.grid_size)
+        ], dtype=np.int32)
         return self._get_obs(), {}
 
     def step(self, action):
@@ -91,8 +99,8 @@ class KeyToDoorEnv(gym.Env):
             self.pos[1] = max(0, self.pos[1] - 1)
         elif action == 3:    # right
             self.pos[1] = min(self.grid_size-1, self.pos[1] + 1)
-        elif action == 4:    # pick key
-            if self.room == 0 and (self.pos[0] == self.grid_size-1 and self.pos[1] == self.mid):
+        elif action == 4:    # pick key (only in room 0, if the agent is in key's position)
+            if self.room == 0 and self.has_key == 0 and np.array_equal(self.pos, self.key_pos):
                 self.has_key = 1
 
         # Success check (only room 2)
@@ -136,7 +144,8 @@ class KeyToDoorEnv(gym.Env):
 
         # Add key
         if self.room == 0 and self.has_key == 0:
-            grid[self.grid_size - 1][self.mid] = " K "
+            kx, ky = self.key_pos
+            grid[kx][ky] = " K "
 
         # Add door
         if self.room == 2:

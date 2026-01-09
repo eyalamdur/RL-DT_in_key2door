@@ -8,7 +8,7 @@ def random_render(num_steps=30):
     # Reset the environment
     obs, info = env.reset()
     print("Initial state:")
-    print(f"Room: {obs['room']}, Position: {obs['pos']}, Has Key: {bool(obs['has_key'])}")
+    print(f"Room: {obs['room']}, Position: {obs['pos']}, Has Key: {bool(obs['has_key'])}, Key Pos: {obs['key_pos']}")
     print()
     
     # Render initial state
@@ -28,7 +28,7 @@ def random_render(num_steps=30):
         
         print(f"Step {step + 1}: Action={action} ({['up', 'down', 'left', 'right', 'pick'][action]})")
         print(f"Reward: {reward:.2f}, Total Reward: {total_reward:.2f}")
-        print(f"Room: {obs['room']}, Position: {obs['pos']}, Has Key: {bool(obs['has_key'])}")
+        print(f"Room: {obs['room']}, Position: {obs['pos']}, Has Key: {bool(obs['has_key'])}, Key Pos: {obs['key_pos']}")
         
         # Render the environment
         env.render()
@@ -54,7 +54,7 @@ def winning_render(num_steps=30):
     # Reset the environment
     obs, info = env.reset()
     print("Winning sequence - Initial state:")
-    print(f"Room: {obs['room']}, Position: {obs['pos']}, Has Key: {bool(obs['has_key'])}")
+    print(f"Room: {obs['room']}, Position: {obs['pos']}, Has Key: {bool(obs['has_key'])}, Key Pos: {obs['key_pos']}")
     print()
     
     # Render initial state
