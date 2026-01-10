@@ -37,6 +37,9 @@ def evaluate_ppo(env: gym.Env, model):
     done = False
     cumulative_reward = 0
     
+    # Print initial state
+    env.render()
+    
     while not done:
         action, _ = model.predict(state)
         state, reward, terminated, truncated, _ = env.step(action)
@@ -53,6 +56,9 @@ def evaluate_dt(env: gym.Env, model, target_return=10.0, context_size=20):
     state, _ = env.reset()
     done = False
     cumulative_reward = 0
+    
+    # Print initial state
+    env.render()
     
     # Initialize trajectory context
     observations = []

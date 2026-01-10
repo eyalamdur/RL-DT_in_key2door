@@ -16,7 +16,7 @@ The Key-to-Door environment is a sequential decision-making task implemented as 
 - Small penalty per step (-0.01) to encourage efficiency
 - Large terminal reward (+10.0) upon successfully reaching the door with the key
 
-### Approaches Compared
+### Approaches Compared 🔄
 
 1. **PPO (Proximal Policy Optimization)**: An online RL algorithm that learns through trial-and-error interactions with the environment, implemented using `stable-baselines3`. Acts as the "teacher" agent.
 
