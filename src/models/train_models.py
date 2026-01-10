@@ -1,80 +1,144 @@
+import os
+# Disable colored logging from d3rlpy/structlog (must be set before importing d3rlpy)
+os.environ["NO_COLOR"] = "1"
+
 import logging
+import argparse
+import sys
+import numpy as np
+import d3rlpy
 import utils
-from models.ppo.train_ppo import train_ppo
+import gymnasium as gym
+
+from models.ppo.train_ppo import train_ppo, load_ppo
+from models.dt.train_dt import train_dt
 from env.KeyToDoor import KeyToDoorEnv as k2d
 
 # Configure logging
 utils.configure_logging()
 
-def add_training_args(parser):
-    """Add training-specific arguments to the parser."""
-    # Environment parameters
-    parser.add_argument('--grid_size', type=int,
-                        help='Grid size (n) for the environment')
+def run_train_ppo(env, config):
+    logging.info("Starting PPO Training...")
+    ppo_config = config.get("ppo", {})
+    model = train_ppo(env, config=ppo_config.copy())
+    return model
 
-    # Training parameters
-    parser.add_argument('--policy', type=str,
-                        help='Policy type (e.g. MultiInputPolicy)')
-    parser.add_argument('--device', type=str,
-                        help='Device to use for training (cpu or cuda)')
-    parser.add_argument('--learning_rate', type=float,
-                        help='Learning rate')
-    parser.add_argument('--n_steps', type=int,
-                        help='Number of steps to run for each environment per update')
-    parser.add_argument('--batch_size', type=int,
-                        help='Minibatch size')
-    parser.add_argument('--n_epochs', type=int,
-                        help='Number of epoch when optimizing the surrogate loss')
-    parser.add_argument('--gamma', type=float,
-                        help='Discount factor')
-    parser.add_argument('--gae_lambda', type=float,
-                        help='Factor for trade-off of bias vs variance for GAE')
-    parser.add_argument('--ent_coef', type=float,
-                        help='Entropy coefficient for the loss calculation')
-    parser.add_argument('--verbose', type=int,
-                        help='Verbosity level')
-    parser.add_argument('--total_timesteps', type=int,
-                        help='Total timesteps for training')
+def run_collect_data(env: gym.Env, config: dict) -> list[dict]:
+    """
+    Collect data from the environment.
+    Args:
+        env: The environment to collect data from.
+        config: The configuration dictionary.
+    Returns:
+        trajs (list[dict]): The collected trajectories.
+    """
+    logging.info("Starting Data Collection...")
+    
+    date_str, time_str = utils.get_current_date_time_strings()
+    # Default to the best model saved by EvalCallback
+    default_ppo_path = f"results/models/PPO/{date_str}/{time_str}/best_model.zip"
+    
+    # Load PPO model
+    ppo_path = config.get("pipeline", {}).get("ppo_model_path", default_ppo_path)
+    if os.path.exists(ppo_path):
+        model = load_ppo(ppo_path)
+        logging.info(f"Loaded PPO model from {ppo_path}")
+    else:
+        logging.warning(f"PPO model not found at {ppo_path}. Using random agent.")
+        model = None
+
+    dc_config = config.get("data_collection", {})
+    num_episodes = dc_config.get("num_episodes", 100)
+    
+    default_save_path = f"results/data/{date_str}/{time_str}/expert_data.h5"
+    save_path = dc_config.get("save_path", default_save_path)
+    
+    trajs = utils.collect_trajectories(env, model, num_episodes=num_episodes, max_traj_length=30)
+    dataset = convert_to_mdp_dataset(trajs) # Obs dim 4, act dim 1 for KeyToDoor
+    
+    os.makedirs(os.path.dirname(save_path), exist_ok=True)
+    dataset.dump(save_path)
+    logging.info(f"Saved dataset to {save_path}")
+
+def convert_to_mdp_dataset(trajectories: list[dict]) -> d3rlpy.dataset.MDPDataset:
+    """
+    Convert trajectories to d3rlpy MDPDataset.
+    Args:
+        trajectories: The trajectories to convert.
+    Returns:
+        dataset (d3rlpy.dataset.MDPDataset)
+    """
+    observations = []
+    actions = []
+    rewards = []
+    terminals = []
+    timeouts = []
+
+    for traj in trajectories:
+        # Flatten observation if it's a dictionary (KeyToDoor specific)
+        obs = traj['states']
+        if len(obs) > 0 and (isinstance(obs[0], dict) or (obs.dtype == 'O')):
+             flat_obs = []
+             for s in obs:
+                 flat_s = np.concatenate([
+                     np.array([s['room']]), 
+                     s['pos'], 
+                     np.array([s['has_key']])
+                 ])
+                 flat_obs.append(flat_s)
+             obs = np.array(flat_obs)
+        
+        observations.append(obs)
+        actions.append(traj['actions'])
+        rewards.append(traj['rewards'])
+        
+        curr_terminals = np.zeros(len(traj['actions']))
+        curr_terminals[-1] = 1.0 
+        terminals.append(curr_terminals)
+        curr_timeouts = np.zeros(len(traj['actions']))
+        timeouts.append(curr_timeouts)
+
+    observations = np.concatenate(observations)
+    actions = np.concatenate(actions)
+    rewards = np.concatenate(rewards)
+    terminals = np.concatenate(terminals)
+    timeouts = np.concatenate(timeouts)
+    
+    if len(actions.shape) == 1:
+        actions = actions.reshape(-1, 1)
+
+    return d3rlpy.dataset.MDPDataset(
+        observations=observations,
+        actions=actions,
+        rewards=rewards,
+        terminals=terminals,
+        timeouts=timeouts,
+    )
 
 def main():
-    """
-    Main function to create the environment and train the agents.
-    """
-    # Parse arguments (flat merge of config and CLI args at top level if config is flat)
-    # With nested config, 'env' and 'ppo' keys will exist in config dict.
     config = utils.get_config_from_args(
-        description='Train PPO agent for KeyToDoor environment',
-        default_config_path="src/config/ppo_config.json",
-        custom_args_setup=add_training_args
+        description="Train Models Pipeline (PPO, Data Collection, DT)",
+        default_config_path="src/config/train_config.json"
     )
     
-    # Extract Environment Configuration
-    env_config = config.get("env", {})
-    # grid_size can be in env_config, or at top level (CLI override)
-    grid_size = config.get("grid_size") or env_config.get("grid_size", 4)
+    logging.info(f"Training Configuration Loaded.")
     
-    # Create the environment
+    # Setup Environment
+    env_config = config.get("environment", {})
+    grid_size = env_config.get("grid_size", 4)
     env = k2d(n=grid_size)
-    logging.info(f"Environment created successfully with grid_size={grid_size}.")
+    logging.info(f"Environment created (grid_size={grid_size})")
 
-    # Extract PPO Configuration
-    ppo_config = config.get("ppo", {}).copy()
+    pipeline_steps = config.get("pipeline", {}).get("steps", [])
     
-    # Update ppo_config with any top-level CLI arguments that match PPO parameters
-    # This assumes utils.get_config_from_args put CLI args at the top level
-    ppo_param_names = [
-        "policy", "device", "learning_rate", "n_steps", "batch_size", 
-        "n_epochs", "gamma", "gae_lambda", "ent_coef", "verbose", "total_timesteps"
-    ]
-    
-    for param in ppo_param_names:
-        if param in config:
-            ppo_config[param] = config[param]
-
-    # Train PPO
-    logging.info(f"Training PPO with config: {ppo_config}")
-    train_ppo(env, config=ppo_config)
-    logging.info("Models trained successfully.")
+    if "train_ppo" in pipeline_steps:
+        run_train_ppo(env, config)
+        
+    if "collect_data" in pipeline_steps:
+        run_collect_data(env, config)
+        
+    if "train_dt" in pipeline_steps:
+        train_dt(config)
 
 if __name__ == "__main__":
     main()

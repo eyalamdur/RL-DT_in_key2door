@@ -1,4 +1,2 @@
 """ Decision Transformer module initialization file. """
-# This file is used to import the DecisionTransformer class and any other necessary components.
-from .decision_transformer import DecisionTransformer
-from train.trainer import Trainer
+from .train_dt import train_dt, load_dt
