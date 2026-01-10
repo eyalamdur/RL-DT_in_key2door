@@ -1,6 +1,8 @@
 {
   "models": [
-        ["ppo", "results/models/PPO/ppo_1"]
+        ["ppo_model", "results/models/PPO/10_01_2026/01:10:35/best_model.zip"],
+        ["dt", "results/models/DT/10_01_2026/01:10:35/dt_model.d3"]
   ],
-  "grid_size": 9
+  "grid_size": 6,
+  "target_return": 10.0
 }
