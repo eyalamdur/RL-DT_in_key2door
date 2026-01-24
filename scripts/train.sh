@@ -1,5 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=train_k2d
+#SBATCH --partition=clair
 #SBATCH --cpus-per-task=2
 #SBATCH --gres=gpu:1
 #SBATCH --mem=16G
@@ -30,7 +31,7 @@ if [ -z "${SLURM_JOB_ID:-}" ]; then
     echo "Submitting job with logs in ${LOG_DIR}..."
     
     # Submit this script itself to sbatch, overriding the output/error paths
-    sbatch --output="${LOG_DIR}/train.out" --error="${LOG_DIR}/train.err" "$0" "$@"
+    sbatch -p clair --output="${LOG_DIR}/train.out" --error="${LOG_DIR}/train.err" "$0" "$@"
     
     exit 0
 fi
@@ -43,7 +44,7 @@ fi
 if [ -n "${SLURM_SUBMIT_DIR:-}" ]; then
     PROJECT_ROOT="${SLURM_SUBMIT_DIR}"
 else
-    PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 fi
 
 CONFIG_PATH="${PROJECT_ROOT}/src/config/train_config.json"
@@ -51,7 +52,7 @@ EXTRA_ARGS=""
 
 print_help() {
     cat <<'EOF'
-Usage: ./train.sh [options]
+Usage: ./scripts/train.sh [options]
 
 This script self-submits to SLURM with timestamped logs in logs/DD_MM_YYYY/HH_MM_SS/.
 
@@ -87,21 +88,32 @@ parse_args() {
 
 run_training() {
     # Activate virtual environment
-    if [[ -d "${PROJECT_ROOT}/.venv" ]]; then
+    if [[ -f "${PROJECT_ROOT}/.venv/bin/activate" ]]; then
+        echo "Activating virtual environment: ${PROJECT_ROOT}/.venv"
         source "${PROJECT_ROOT}/.venv/bin/activate"
-    elif [[ -d "${PROJECT_ROOT}/venv" ]]; then
+    elif [[ -f "${PROJECT_ROOT}/venv/bin/activate" ]]; then
+        echo "Activating virtual environment: ${PROJECT_ROOT}/venv"
         source "${PROJECT_ROOT}/venv/bin/activate"
+    else
+        echo "ERROR: No virtual environment found at ${PROJECT_ROOT}/.venv or ${PROJECT_ROOT}/venv" >&2
+        exit 1
     fi
     
-    # Add project root to PYTHONPATH
-    export PYTHONPATH="${PROJECT_ROOT}:${PYTHONPATH:-}"
+    # Verify Python is from the venv
+    echo "Using Python: $(which python)"
+    echo "Python version: $(python --version)"
+    echo "Python site-packages: $(python -c 'import site; print(site.getsitepackages())')"
+    python -c "import numpy; print('numpy found at:', numpy.__file__)" || echo "numpy import failed"
+    
+    # Add project root and src to PYTHONPATH
+    export PYTHONPATH="${PROJECT_ROOT}/src:${PROJECT_ROOT}:${PYTHONPATH:-}"
 
     echo "Starting training pipeline..."
     echo "Job ID: ${SLURM_JOB_ID}"
     echo "Project Root: ${PROJECT_ROOT}"
     echo "Config: ${CONFIG_PATH}"
     
-    python "${PROJECT_ROOT}/src/models/train_models.py" \
+    "${PROJECT_ROOT}/.venv/bin/python" "${PROJECT_ROOT}/src/models/train_models.py" \
         --config "${CONFIG_PATH}" \
         ${EXTRA_ARGS}
 }

@@ -2,6 +2,7 @@ import os
 import pickle
 import numpy as np
 import gymnasium as gym
+import d3rlpy
 import torch
 import torch.nn as nn
 from datetime import datetime
@@ -163,3 +164,75 @@ def collect_trajectories(
             })
 
     return trajectories
+
+def save_trajectories(trajectories: List[Dict[str, np.ndarray]], agent_type: str, env: gym.Env, base_dir: str = "results/trajectories") -> str:
+    """
+    Save trajectories to results/trajectories/<agent_type>/traj_#...pkl with full metadata in filename.
+    Args:
+        trajectories (List[Dict[str, np.ndarray]]): List of trajectories to save.
+        agent_type (str): The type of agent (e.g., "random", "PPO", "TD3").
+        env (gym.Env): The environment used for collecting the trajectories.
+        base_dir (str): Base directory to save the trajectories.
+    """
+    file_path = "results/data/room_size_20.pkl"
+
+    with open(file_path, "wb") as f:
+        pickle.dump(trajectories, f)
+
+    print(f"[✓] Saved {agent_type} trajectories to {file_path}")
+    return file_path
+
+def convert_to_mdp_dataset(trajectories):
+    observations = []
+    actions = []
+    rewards = []
+    terminals = []
+    timeouts = []
+
+    for traj in trajectories:
+        # 1. Handle Observation (Flatten dictionary if needed)
+        obs = traj['states']
+        # Check if obs is list of dicts (KeyToDoorEnv specific)
+        if len(obs) > 0 and (isinstance(obs[0], dict) or (hasattr(obs, 'dtype') and obs.dtype == 'O')):
+             flat_obs = []
+             for s in obs:
+                 # Flatten: room(1) + pos(2) + has_key(1)
+                 flat_s = np.concatenate([
+                     np.array([s['room']]).flatten(), 
+                     s['pos'].flatten(), 
+                     np.array([s['has_key']]).flatten()
+                 ])
+                 flat_obs.append(flat_s)
+             obs = np.array(flat_obs)
+        
+        observations.append(obs)
+        actions.append(traj['actions'])
+        rewards.append(traj['rewards'])
+        
+        # 2. Handle Terminals (1.0 at end of episode)
+        curr_terminals = np.zeros(len(traj['actions']))
+        curr_terminals[-1] = 1.0 
+        terminals.append(curr_terminals)
+        
+        # 3. Handle Timeouts (0.0 usually)
+        curr_timeouts = np.zeros(len(traj['actions']))
+        timeouts.append(curr_timeouts)
+
+    # Concatenate all episodes into single arrays
+    observations = np.concatenate(observations)
+    actions = np.concatenate(actions)
+    rewards = np.concatenate(rewards)
+    terminals = np.concatenate(terminals)
+    timeouts = np.concatenate(timeouts)
+    
+    # Ensure actions are 2D (N, 1) if discrete
+    if len(actions.shape) == 1:
+        actions = actions.reshape(-1, 1)
+
+    return d3rlpy.dataset.MDPDataset(
+        observations=observations,
+        actions=actions,
+        rewards=rewards,
+        terminals=terminals,
+        timeouts=timeouts,
+    )

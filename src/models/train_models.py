@@ -115,6 +115,115 @@ def convert_to_mdp_dataset(trajectories: list[dict]) -> d3rlpy.dataset.MDPDatase
         timeouts=timeouts,
     )
 
+def generate_quality_datasets(env: gym.Env, config: dict):
+    logging.info("Starting Quality Dataset Generation...")
+    
+    date_str, time_str = utils.get_current_date_time_strings()
+    
+    # Load PPO Model (Expert)
+    default_ppo_path = f"results/models/PPO/{date_str}/{time_str}/best_model.zip"
+    ppo_path = config.get("pipeline", {}).get("ppo_model_path", default_ppo_path)
+    if os.path.exists(ppo_path):
+        model = load_ppo(ppo_path)
+        logging.info(f"Loaded PPO model from {ppo_path}")
+    else:
+        logging.error(f"PPO model not found at {ppo_path}. Cannot generate expert data.")
+        return
+
+    qc_config = config.get("quality_generation", {})
+    num_episodes = qc_config.get("num_episodes", 100)
+    base_save_path = qc_config.get("save_path", f"results/data/{date_str}/{time_str}/")
+    os.makedirs(base_save_path, exist_ok=True)
+
+
+    # Collect & Filter Ground Truth (Winning Trajectories)
+    logging.info("Collecting Expert Data...")
+    
+    # Collect more to ensure we have enough winning ones
+    raw_trajs = utils.collect_trajectories(env, model, num_episodes=num_episodes * 2, max_traj_length=100)
+    
+    # Filter for success (reward > 0)
+    winning_trajs = [t for t in raw_trajs if np.sum(t['rewards']) > 0]
+    
+    # Limit to requested number
+    if len(winning_trajs) > num_episodes:
+        winning_trajs = winning_trajs[:num_episodes]
+    
+    logging.info(f"Found {len(winning_trajs)} winning trajectories out of {len(raw_trajs)} collected.")
+    
+    # Save Ground Truth
+    gt_path = os.path.join(base_save_path, "ground_truth.h5")
+    gt_dataset = convert_to_mdp_dataset(winning_trajs)
+    gt_dataset.dump(gt_path)
+    logging.info(f"Saved Ground Truth dataset to {gt_path}")
+
+
+    # Create Half-Truth (50% Correct + 50% Random)
+    # ---------------------------------------------------------
+    logging.info("Generating Half-Truth Data (1 Room Expert, 2 Random)...")
+    half_trajs = []
+    
+    # We generate trajectories from scratch using mixed policy
+    for _ in trange(num_episodes, desc="Generating Half-Truth Data"):
+        obs, _ = env.reset()
+        states, actions, rewards = [], [], []
+        
+        # Randomly choose which room (0, 1, 2) will be Expert
+        expert_room = np.random.randint(0, 3)
+        
+        done = False
+        while not done:
+            # obs is a dict, but we need to access 'room' carefully
+            current_room = int(obs['room']) if isinstance(obs, dict) else 0
+            
+            if current_room == expert_room and model is not None:
+                # Use Expert
+                action, _ = model.predict(obs, deterministic=False)
+            else:
+                # Use Random
+                action = env.action_space.sample()
+                
+            next_obs, reward, terminated, truncated, _ = env.step(action)
+            
+            states.append(obs)
+            actions.append(action)
+            rewards.append(reward)
+            obs = next_obs
+            done = terminated or truncated
+            
+            # Safety break
+            if len(states) >= 1000:
+                break
+                
+        # Calculate RTG
+        rtgs = np.cumsum(np.array(rewards)[::-1])[::-1]
+        
+        half_trajs.append({
+            "states": np.array(states),
+            "actions": np.array(actions),
+            "rewards": np.array(rewards),
+            "rtgs": rtgs
+        })
+
+    # Save Half-Truth
+    ht_path = os.path.join(base_save_path, "half_truth.h5")
+    ht_dataset = convert_to_mdp_dataset(half_trajs)
+    ht_dataset.dump(ht_path)
+    logging.info(f"Saved Half-Truth dataset to {ht_path}")
+
+
+    # Collect Random (Failures)
+    logging.info("Collecting Random Data...")
+    # Force random model
+    random_trajs = utils.collect_trajectories(env, None, num_episodes=num_episodes, max_traj_length=100)
+    
+    # Save Random
+    rnd_path = os.path.join(base_save_path, "random.h5")
+    rnd_dataset = convert_to_mdp_dataset(random_trajs)
+    rnd_dataset.dump(rnd_path)
+    logging.info(f"Saved Random dataset to {rnd_path}")
+
+
 def main():
     config = utils.get_config_from_args(
         description="Train Models Pipeline (PPO, Data Collection, DT)",
@@ -139,6 +248,9 @@ def main():
         
     if "train_dt" in pipeline_steps:
         train_dt(config)
+
+    if "generate_quality_datasets" in pipeline_steps:
+        generate_quality_datasets(env, config)
 
 if __name__ == "__main__":
     main()
