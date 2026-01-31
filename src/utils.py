@@ -196,11 +196,12 @@ def convert_to_mdp_dataset(trajectories):
         if len(obs) > 0 and (isinstance(obs[0], dict) or (hasattr(obs, 'dtype') and obs.dtype == 'O')):
              flat_obs = []
              for s in obs:
-                 # Flatten: room(1) + pos(2) + has_key(1)
+                 # Flatten: room(1) + pos(2) + has_key(1) + key_pos(2) = 6 dims
                  flat_s = np.concatenate([
                      np.array([s['room']]).flatten(), 
                      s['pos'].flatten(), 
-                     np.array([s['has_key']]).flatten()
+                     np.array([s['has_key']]).flatten(),
+                     s['key_pos'].flatten()  # IMPORTANT: Include key position!
                  ])
                  flat_obs.append(flat_s)
              obs = np.array(flat_obs)

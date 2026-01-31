@@ -1,0 +1,18 @@
+{
+    "grid_size": 10,
+    "target_return": 10.0,
+    "models": [
+        [
+            "dt_ground_truth_10",
+            "/home/eyal.amdur/K2D/results/models/DT/quality/dt_model_ground_truth_10.d3"
+        ],
+        [
+            "dt_half_truth_10",
+            "/home/eyal.amdur/K2D/results/models/DT/quality/dt_model_half_truth_10.d3"
+        ],
+        [
+            "dt_random_10",
+            "/home/eyal.amdur/K2D/results/models/DT/quality/dt_model_random_10.d3"
+        ]
+    ]
+}

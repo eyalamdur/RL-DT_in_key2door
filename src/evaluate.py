@@ -28,7 +28,8 @@ def flatten_state(s):
     return np.concatenate([
         np.array([s['room']], dtype=np.float32), 
         s['pos'].astype(np.float32), 
-        np.array([s['has_key']], dtype=np.float32)
+        np.array([s['has_key']], dtype=np.float32),
+        s['key_pos'].astype(np.float32)  # IMPORTANT: Include key position!
     ])
 
 def evaluate_ppo(env: gym.Env, model):
