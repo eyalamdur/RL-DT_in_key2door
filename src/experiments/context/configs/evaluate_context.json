@@ -1,0 +1,18 @@
+{
+    "grid_size": 10,
+    "target_return": 10.0,
+    "models": [
+        [
+            "dt_ctx10",
+            "/home/eyal.amdur/K2D/results/models/DT/context/dt_model_ctx10.d3"
+        ],
+        [
+            "dt_ctx30",
+            "/home/eyal.amdur/K2D/results/models/DT/context/dt_model_ctx30.d3"
+        ],
+        [
+            "dt_ctx60",
+            "/home/eyal.amdur/K2D/results/models/DT/context/dt_model_ctx60.d3"
+        ]
+    ]
+}

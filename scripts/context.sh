@@ -4,7 +4,7 @@
 #SBATCH --cpus-per-task=2
 #SBATCH --gres=gpu:1
 #SBATCH --mem=16G
-#SBATCH --time=48:00:00
+#SBATCH --time=72:00:00
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=eyal.amdur@campus.technion.ac.il
 #SBATCH --output=logs/context/context.out

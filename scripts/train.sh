@@ -9,8 +9,8 @@
 #SBATCH --mail-user=eyal.amdur@campus.technion.ac.il
 
 # Define default log path just in case, though usually overridden
-#SBATCH --output=logs/train_%j.out
-#SBATCH --error=logs/train_%j.err
+#SBATCH --output=logs/train/train.out
+#SBATCH --error=logs/train/train.err
 
 set -euo pipefail
 
