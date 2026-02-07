@@ -182,7 +182,7 @@ def save_trajectories(trajectories: List[Dict[str, np.ndarray]], agent_type: str
     print(f"[✓] Saved {agent_type} trajectories to {file_path}")
     return file_path
 
-def convert_to_mdp_dataset(trajectories):
+def convert_to_mdp_dataset(trajectories, has_key=True):
     observations = []
     actions = []
     rewards = []
@@ -197,12 +197,18 @@ def convert_to_mdp_dataset(trajectories):
              flat_obs = []
              for s in obs:
                  # Flatten: room(1) + pos(2) + has_key(1) + key_pos(2) = 6 dims
-                 flat_s = np.concatenate([
-                     np.array([s['room']]).flatten(), 
-                     s['pos'].flatten(), 
-                     np.array([s['has_key']]).flatten(),
-                     s['key_pos'].flatten()  # IMPORTANT: Include key position!
-                 ])
+                 if has_key:
+                     flat_s = np.concatenate([
+                         np.array([s['room']]).flatten(), 
+                         s['pos'].flatten(), 
+                         np.array([s['has_key']]).flatten(),
+                         s['key_pos'].flatten()
+                     ])
+                 else:
+                     flat_s = np.concatenate([
+                         np.array([s['room']]).flatten(), 
+                         s['pos'].flatten(), 
+                     ])
                  flat_obs.append(flat_s)
              obs = np.array(flat_obs)
         

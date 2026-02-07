@@ -11,8 +11,6 @@ from src.models.dt.train_dt import train_dt, load_dt
 from src.env.KeyToDoor import KeyToDoorEnv as k2d
 import d3rlpy
 from d3rlpy.algos.transformer.inputs import TransformerInput
-import logging
-
 
 
 def save_json(path, data):
@@ -90,7 +88,7 @@ def evaluate_dt_normalized(env, model, grid_size, target_return=10.0, context_si
         step += 1
         done = terminated or truncated
 
-    logging.info(f"DT agent's cumulative_reward: {cumulative_reward}")
+    print(f"DT agent's cumulative_reward: {cumulative_reward}")
     return cumulative_reward
 
 
@@ -353,7 +351,7 @@ def main():
     # ---------------------------------------------------------
     print("\n=== Decision Transformers Training ===")
     # Train on: individual sizes (5, 7) and combined (5+7), then test on size 10
-    generalization_datasets = ["ground_truth_5_norm"]#, "ground_truth_5_7_norm"]
+    generalization_datasets = ["ground_truth_5_norm", "ground_truth_5_7_norm"]
     dt_models_list = []
 
     for dataset_name in generalization_datasets:
@@ -404,15 +402,16 @@ def main():
     }
     save_json(eval_config_path, eval_config)
     
-    for model_name, model_path in dt_models_list:
-        print(f"\nEvaluating {model_name} on size 10 (generalization)...")
-        model = load_dt(model_path)
-        evaluate_dt_normalized(env_10, model, grid_size=10, target_return=10.0)
+    for i in range(10):
+        for model_name, model_path in dt_models_list:
+            print(f"\nEvaluating {model_name} on size 10 (generalization)...")
+            model = load_dt(model_path)
+            evaluate_dt_normalized(env_10, model, grid_size=10, target_return=10.0)
 
-    # print("\n=== Evaluation (testing on size 7 - in-distribution) ===")
-    # print(f"\nEvaluating dt_ground_truth_5_7_norm on size 7...")
-    # model = load_dt(os.path.join(dt_models_base_dir, "generalization/dt_model_ground_truth_5_7_norm.d3"))
-    # evaluate_dt_normalized(env_7, model, grid_size=7, target_return=10.0)
+        for model_name, model_path in dt_models_list:
+            print(f"\nEvaluating {model_name} on size 7 (in-distribution)...")
+            model = load_dt(model_path)
+            evaluate_dt_normalized(env_7, model, grid_size=7, target_return=10.0)
     
     print("\nAll evaluations completed successfully!")
 
