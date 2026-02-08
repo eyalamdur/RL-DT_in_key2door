@@ -95,3 +95,48 @@ DT Model trained and saved to: /home/eyal.amdur/K2D/results/models/DT/context_en
 [2m2026-02-07 21:10.14[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/context_env3/dt_ctx60/DiscreteDecisionTransformer_20260207205431/model_100.d3[0m
 [2m2026-02-07 21:23.44[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260207205431: epoch=2 step=200[0m [36mepoch[0m=[35m2[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.00687995195388794, 'time_algorithm_update': 8.09409890651703, 'loss': 0.08031731396913529, 'learning_rate': 9.998206260440188e-05, 'time_step': 8.101103775501251}[0m [36mstep[0m=[35m200[0m
 [2m2026-02-07 21:23.44[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/context_env3/dt_ctx60/DiscreteDecisionTransformer_20260207205431/model_200.d3[0m
+[2m2026-02-07 21:37.12[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260207205431: epoch=3 step=300[0m [36mepoch[0m=[35m3[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.00719895601272583, 'time_algorithm_update': 8.071382710933685, 'loss': 0.07409892320632934, 'learning_rate': 9.994979194321976e-05, 'time_step': 8.078703491687774}[0m [36mstep[0m=[35m300[0m
+[2m2026-02-07 21:37.13[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/context_env3/dt_ctx60/DiscreteDecisionTransformer_20260207205431/model_300.d3[0m
+[2m2026-02-07 21:50.41[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260207205431: epoch=4 step=400[0m [36mepoch[0m=[35m4[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.0075527667999267575, 'time_algorithm_update': 8.068364164829255, 'loss': 0.07262197434902191, 'learning_rate': 9.990153025922029e-05, 'time_step': 8.076042082309723}[0m [36mstep[0m=[35m400[0m
+[2m2026-02-07 21:50.41[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/context_env3/dt_ctx60/DiscreteDecisionTransformer_20260207205431/model_400.d3[0m
+[2m2026-02-07 22:04.10[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260207205431: epoch=5 step=500[0m [36mepoch[0m=[35m5[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.008589713573455811, 'time_algorithm_update': 8.077175409793854, 'loss': 0.07175895631313324, 'learning_rate': 9.983660275610785e-05, 'time_step': 8.08588662624359}[0m [36mstep[0m=[35m500[0m
+[2m2026-02-07 22:04.10[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/context_env3/dt_ctx60/DiscreteDecisionTransformer_20260207205431/model_500.d3[0m
+[2m2026-02-07 22:18.41[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260207205431: epoch=6 step=600[0m [36mepoch[0m=[35m6[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.012400202751159668, 'time_algorithm_update': 8.69289740562439, 'loss': 0.07091582670807839, 'learning_rate': 9.975639142083295e-05, 'time_step': 8.705435774326325}[0m [36mstep[0m=[35m600[0m
+[2m2026-02-07 22:18.41[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/context_env3/dt_ctx60/DiscreteDecisionTransformer_20260207205431/model_600.d3[0m
+[2m2026-02-07 22:32.54[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260207205431: epoch=7 step=700[0m [36mepoch[0m=[35m7[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.011048698425292968, 'time_algorithm_update': 8.516970164775849, 'loss': 0.07062393005937338, 'learning_rate': 9.965860564164191e-05, 'time_step': 8.528157339096069}[0m [36mstep[0m=[35m700[0m
+[2m2026-02-07 22:32.55[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/context_env3/dt_ctx60/DiscreteDecisionTransformer_20260207205431/model_700.d3[0m
+[2m2026-02-07 22:46.54[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260207205431: epoch=8 step=800[0m [36mepoch[0m=[35m8[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.009102463722229004, 'time_algorithm_update': 8.385452027320861, 'loss': 0.07067704677581788, 'learning_rate': 9.954443272765995e-05, 'time_step': 8.394683029651642}[0m [36mstep[0m=[35m800[0m
+[2m2026-02-07 22:46.55[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/context_env3/dt_ctx60/DiscreteDecisionTransformer_20260207205431/model_800.d3[0m
+[2m2026-02-07 23:00.55[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260207205431: epoch=9 step=900[0m [36mepoch[0m=[35m9[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.01006101369857788, 'time_algorithm_update': 8.388447349071503, 'loss': 0.07049542069435119, 'learning_rate': 9.941366695086985e-05, 'time_step': 8.398635754585266}[0m [36mstep[0m=[35m900[0m
+[2m2026-02-07 23:00.55[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/context_env3/dt_ctx60/DiscreteDecisionTransformer_20260207205431/model_900.d3[0m
+[2m2026-02-07 23:14.44[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260207205431: epoch=10 step=1000[0m [36mepoch[0m=[35m10[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.009750494956970215, 'time_algorithm_update': 8.28181069612503, 'loss': 0.07023925594985485, 'learning_rate': 9.926711262087002e-05, 'time_step': 8.291687264442444}[0m [36mstep[0m=[35m1000[0m
+[2m2026-02-07 23:14.45[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/context_env3/dt_ctx60/DiscreteDecisionTransformer_20260207205431/model_1000.d3[0m
+2026-02-07 23:14:45,501 - INFO - Saved DT model to /home/eyal.amdur/K2D/results/models/DT/context_env3/dt_model_ctx60.d3
+DT Model trained and saved to: /home/eyal.amdur/K2D/results/models/DT/context_env3/dt_model_ctx60.d3
+
+=== Evaluation ===
+
+Evaluating dt_ctx10...
+2026-02-07 23:14:45,916 - INFO - Loaded DT model from /home/eyal.amdur/K2D/results/models/DT/context_env3/dt_model_ctx10.d3
+Room 0 | has_key=0
++---+---+---+---+---+---+---+---+---+---+
+| . | . | . | . | . | . | . | . | . | . |
++---+---+---+---+---+---+---+---+---+---+
+| . | . | . | . | . | . | . | . | . | . |
++---+---+---+---+---+---+---+---+---+---+
+| . | K | . | . | . | . | . | . | . | . |
++---+---+---+---+---+---+---+---+---+---+
+| . | . | . | . | . | . | . | . | . | . |
++---+---+---+---+---+---+---+---+---+---+
+| . | . | . | . | . | . | . | . | . | . |
++---+---+---+---+---+---+---+---+---+---+
+| . | . | . | . | . | . | . | . | . | . |
++---+---+---+---+---+---+---+---+---+---+
+| . | . | . | . | . | . | . | . | . | . |
++---+---+---+---+---+---+---+---+---+---+
+| . | . | . | . | . | . | . | . | . | . |
++---+---+---+---+---+---+---+---+---+---+
+| . | . | . | . | . | . | . | . | . | . |
++---+---+---+---+---+---+---+---+---+---+
+| A | . | . | . | . | . | . | . | . | . |
++---+---+---+---+---+---+---+---+---+---+
