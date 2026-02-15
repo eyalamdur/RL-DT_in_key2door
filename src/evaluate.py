@@ -23,14 +23,24 @@ def add_eval_args(parser):
     parser.add_argument('--target_return', type=float, default=10.0,
                         help='Target return for Decision Transformer')
 
-def flatten_state(s):
-    """Flatten dict state to numpy array for DT."""
-    return np.concatenate([
-        np.array([s['room']], dtype=np.float32), 
-        s['pos'].astype(np.float32), 
-        np.array([s['has_key']], dtype=np.float32),
-        s['key_pos'].astype(np.float32)  # IMPORTANT: Include key position!
-    ])
+def flatten_state(s, include_has_key=True):
+    """Flatten dict state to numpy array for DT.
+    include_has_key=True: 6-dim (room, pos_x, pos_y, has_key, key_x, key_y) - ENV1
+    include_has_key=False: 5-dim (room, pos_x, pos_y, key_x, key_y) - ENV3
+    """
+    if include_has_key:
+        return np.concatenate([
+            np.array([s['room']], dtype=np.float32), 
+            s['pos'].astype(np.float32), 
+            np.array([s['has_key']], dtype=np.float32),
+            s['key_pos'].astype(np.float32)
+        ])
+    else:
+        return np.concatenate([
+            np.array([s['room']], dtype=np.float32), 
+            s['pos'].astype(np.float32), 
+            s['key_pos'].astype(np.float32)
+        ])
 
 def evaluate_ppo(env: gym.Env, model):
     """Evaluate a PPO model."""
@@ -52,8 +62,10 @@ def evaluate_ppo(env: gym.Env, model):
     logging.info(f"PPO agent's cumulative_reward: {cumulative_reward}")
     return cumulative_reward
 
-def evaluate_dt(env: gym.Env, model, target_return=10.0, context_size=20):
-    """Evaluate a Decision Transformer model using d3rlpy v2.x API."""
+def evaluate_dt(env: gym.Env, model, target_return=10.0, context_size=20, include_has_key=True):
+    """Evaluate a Decision Transformer model using d3rlpy v2.x API.
+    include_has_key: True for ENV1 (6-dim), False for ENV3 (5-dim)
+    """
     state, _ = env.reset()
     done = False
     cumulative_reward = 0
@@ -72,7 +84,7 @@ def evaluate_dt(env: gym.Env, model, target_return=10.0, context_size=20):
     current_rtg = target_return
     
     while not done:
-        flat_state = flatten_state(state)
+        flat_state = flatten_state(state, include_has_key=include_has_key)
         observations.append(flat_state)
         returns_to_go.append(current_rtg)
         timesteps.append(step)
@@ -130,12 +142,12 @@ def evaluate_dt(env: gym.Env, model, target_return=10.0, context_size=20):
     logging.info(f"DT agent's cumulative_reward: {cumulative_reward}")
     return cumulative_reward
 
-def evaluate_model(env: gym.Env, model, model_type='ppo', target_return=10.0):
+def evaluate_model(env: gym.Env, model, model_type='ppo', target_return=10.0, include_has_key=True):
     """Dispatch to appropriate evaluation function."""
     if model_type == 'ppo':
         return evaluate_ppo(env, model)
     elif model_type == 'dt':
-        return evaluate_dt(env, model, target_return=target_return)
+        return evaluate_dt(env, model, target_return=target_return, include_has_key=include_has_key)
     else:
         logging.error(f"Unknown model type: {model_type}")
 

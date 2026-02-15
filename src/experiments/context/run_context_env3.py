@@ -68,7 +68,6 @@ def collect_trajectory(env):
     }
 
 
-
 def generate_dataset(env, num_episodes):
     """Generate dataset with specified policy."""
     trajectories = []
@@ -162,7 +161,7 @@ def main():
     for model_name, model_path in dt_models_list:
         print(f"\nEvaluating {model_name}...")
         model = load_dt(model_path)
-        evaluate_model(env, model, model_type='dt', target_return=10.0)
+        evaluate_model(env, model, model_type='dt', target_return=10.0, include_has_key=False)
 
     print("\nAll evaluations completed successfully!")
 
