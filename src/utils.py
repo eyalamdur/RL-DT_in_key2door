@@ -205,10 +205,9 @@ def convert_to_mdp_dataset(trajectories, has_key=True):
                          s['key_pos'].flatten()
                      ])
                  else:
-                    # ENV3: 5-dim (room, pos_x, pos_y, key_x, key_y) - no has_key
+                    # ENV3: 4-dim (pos_x, pos_y, key_x, key_y) - no room, no has_key
                     flat_s = np.concatenate([
-                        np.array([s['room']]).flatten(), 
-                        s['pos'].flatten(), 
+                        s['pos'].flatten(),
                         s['key_pos'].flatten()
                     ])
                  flat_obs.append(flat_s)

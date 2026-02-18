@@ -41,7 +41,6 @@ class KeyToDoorEnvContext(gym.Env):
         self.render_mode = render_mode
         self.max_room_steps = 2 * n
         self.observation_space = spaces.Dict({
-            "room": spaces.Discrete(3),
             "pos": spaces.Box(low=0, high=n-1, shape=(2,), dtype=np.int32),
             "key_pos": spaces.Box(low=0, high=n-1, shape=(2,), dtype=np.int32)
         })
@@ -62,10 +61,7 @@ class KeyToDoorEnvContext(gym.Env):
         self.room_steps = None
 
     def _get_obs(self):
-        # Clamp room to valid range [0, 2] to prevent out-of-bounds errors
-        room = min(2, max(0, self.room))
         return {
-            "room": np.int32(room),
             "pos": self.pos.copy(),
             "key_pos": self.key_pos.copy(),
         }

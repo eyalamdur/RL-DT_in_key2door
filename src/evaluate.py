@@ -26,7 +26,7 @@ def add_eval_args(parser):
 def flatten_state(s, include_has_key=True):
     """Flatten dict state to numpy array for DT.
     include_has_key=True: 6-dim (room, pos_x, pos_y, has_key, key_x, key_y) - ENV1
-    include_has_key=False: 5-dim (room, pos_x, pos_y, key_x, key_y) - ENV3
+    include_has_key=False: 4-dim (pos_x, pos_y, key_x, key_y) - ENV3 (no room, no has_key)
     """
     if include_has_key:
         return np.concatenate([
@@ -37,8 +37,7 @@ def flatten_state(s, include_has_key=True):
         ])
     else:
         return np.concatenate([
-            np.array([s['room']], dtype=np.float32), 
-            s['pos'].astype(np.float32), 
+            s['pos'].astype(np.float32),
             s['key_pos'].astype(np.float32)
         ])
 

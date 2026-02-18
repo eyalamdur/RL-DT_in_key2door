@@ -1,7 +1,9 @@
 import os
 import sys
 import json
+import shutil
 import numpy as np
+import argparse
 # Add project root and src to sys.path so imports work
 sys.path.append(os.getcwd())
 sys.path.append(os.path.join(os.getcwd(), "src"))
@@ -68,31 +70,86 @@ def collect_trajectory(env):
     }
 
 
-def generate_dataset(env, num_episodes):
-    """Generate dataset with specified policy."""
-    trajectories = []
-    attempts = 0
-    max_attempts = num_episodes * 10
+def get_nokey_action(env):
+    """Policy that skips the key and goes straight to the door."""
+    if env.room == 0 or env.room == 1:
+        return 0  # wait (don't pick up key, run out the clock)
+    else:  # room 2: navigate optimally to door
+        door_pos = [0, env.mid]
+        if env.pos[0] > door_pos[0]:
+            return 0  # up
+        elif env.pos[1] < door_pos[1]:
+            return 3  # right
+        elif env.pos[1] > door_pos[1]:
+            return 2  # left
+        else:
+            return 0
+
+
+def collect_nokey_trajectory(env):
+    """Collect a trajectory that skips the key (will fail at door)."""
+    obs, _ = env.reset()
+    states, actions, rewards = [], [], []
     
-    while len(trajectories) < num_episodes and attempts < max_attempts:
-        
+    while True:
+        states.append(obs)
+        action = get_nokey_action(env)
+        actions.append(action)
+        obs, reward, terminated, truncated, _ = env.step(action)
+        rewards.append(reward)
+        if terminated or truncated:
+            break
+    
+    return {
+        'states': states,
+        'actions': np.array(actions),
+        'rewards': np.array(rewards)
+    }
+
+
+def generate_dataset(env, num_episodes):
+    """Generate mixed dataset: 50% optimal (key picked up) + 50% no-key (skip key)."""
+    trajectories = []
+    half = num_episodes // 2
+    
+    for _ in range(half):
         traj = collect_trajectory(env)
         trajectories.append(traj)
-        attempts += 1
+    
+    for _ in range(num_episodes - half):
+        traj = collect_nokey_trajectory(env)
+        trajectories.append(traj)
     
     return trajectories
 
 def main():
+    parser = argparse.ArgumentParser(description="Train ENV3 context experiment models")
+    parser.add_argument('--force', action='store_true',
+                        help='Force regeneration of data and retraining of models (deletes old files)')
+    args = parser.parse_args()
+
     # ---------------------------------------------------------
     # Setup Paths
     # ---------------------------------------------------------
     base_dir = os.getcwd() # Run from project root
     
-    # Use existing ground truth trajectories
     data_path = os.path.join(base_dir, "results/data/context_env3/ground_truth_10.h5")
+    models_dir = os.path.join(base_dir, "results/models/DT/context_env3")
     
     # Setup Environment (size 10)
     env = KeyToDoorEnvContext(n=10, render_mode="human")
+    
+    # ---------------------------------------------------------
+    # Force cleanup if requested
+    # ---------------------------------------------------------
+    if args.force:
+        print("\n=== Force mode: cleaning old data and models ===")
+        if os.path.exists(data_path):
+            os.remove(data_path)
+            print(f"Deleted old data: {data_path}")
+        if os.path.exists(models_dir):
+            shutil.rmtree(models_dir)
+            print(f"Deleted old models: {models_dir}")
     
     # ---------------------------------------------------------
     # Verify Data Exists
@@ -111,7 +168,7 @@ def main():
     # Train Decision Transformers (Context Sizes: 10, 30, 60)
     # ---------------------------------------------------------
     print("\n=== Decision Transformers Training ===")
-    context_sizes = [10, 30, 60]
+    context_sizes = [10, 30]#, 60]
     dt_models_list = []
 
     for ctx in context_sizes:
