@@ -1,0 +1,22 @@
+{
+    "environment": {
+        "grid_size": 10
+    },
+    "pipeline": {
+        "steps": ["train_ppo"],
+        "ppo_model_path": "results/models/PPO/ppo_room_size_10.zip"
+    },
+    "ppo": {
+        "total_timesteps": 200000,
+        "policy": "MultiInputPolicy",
+        "device": "auto",
+        "learning_rate": 0.0003,
+        "n_steps": 2048,
+        "batch_size": 64,
+        "n_epochs": 10,
+        "gamma": 0.99,
+        "gae_lambda": 0.95,
+        "ent_coef": 0.01,
+        "verbose": 1
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "grid_size": 10,
+    "target_return": 10.0,
+    "models": [
+        [
+            "dt_ground_truth_5_norm",
+            "/home/eyal.amdur/K2D/results/models/DT/generalization/dt_model_ground_truth_5_norm.d3"
+        ],
+        [
+            "dt_ground_truth_5_7_norm",
+            "/home/eyal.amdur/K2D/results/models/DT/generalization/dt_model_ground_truth_5_7_norm.d3"
+        ]
+    ]
+}

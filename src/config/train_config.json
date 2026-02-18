@@ -1,0 +1,36 @@
+{
+    "environment": {
+        "grid_size": 4
+    },
+    "pipeline": {
+        "steps": ["train_ppo", "collect_data", "train_dt"],
+        "ppo_model_path": "results/models/PPO/{DATE}/{TIME}/best_model.zip" 
+    },
+    "ppo": {
+        "total_timesteps": 100000,
+        "policy": "MultiInputPolicy",
+        "device": "cpu",
+        "learning_rate": 0.0003,
+        "n_steps": 2048,
+        "batch_size": 64,
+        "n_epochs": 10,
+        "gamma": 0.99,
+        "gae_lambda": 0.95,
+        "ent_coef": 0.01,
+        "verbose": 1
+    },
+    "data_collection": {
+        "num_episodes": 100,
+        "save_path": "results/data/{DATE}/{TIME}/expert_data.h5"
+    },
+    "dt": {
+        "dataset_path": "results/data/{DATE}/{TIME}/expert_data.h5",
+        "n_steps": 10000,
+        "n_steps_per_epoch": 1000,
+        "batch_size": 64,
+        "context_size": 20,
+        "learning_rate": 1e-4,
+        "save_path": "results/models/DT/{DATE}/{TIME}/dt_model.d3",
+        "log_dir": "logs/dt/{DATE}/{TIME}"
+    }
+}

@@ -1,0 +1,303 @@
+Activating virtual environment: /home/eyal.amdur/K2D/.venv
+Starting Quality Experiment Pipeline...
+Job ID: 68054053
+Project Root: /home/eyal.amdur/K2D
+
+=== Generate Quality Datasets ===
+Ground truth already exists: /home/eyal.amdur/K2D/results/data/ground_truth_10.h5
+Half truth already exists: /home/eyal.amdur/K2D/results/data/half_truth_10.h5
+Random already exists: /home/eyal.amdur/K2D/results/data/random_10.h5
+
+=== Decision Transformers Training ===
+
+--- Training DT on ground_truth_10 ---
+2026-01-31 15:28:36,602 - INFO - Starting DT Training...
+[2m2026-01-31 15:28.37[0m [[32m[1minfo     [0m] [1mSignatures have been automatically determined.[0m [36maction_signature[0m=[35mSignature(dtype=[dtype('int64')], shape=[(1,)])[0m [36mobservation_signature[0m=[35mSignature(dtype=[dtype('int32')], shape=[(6,)])[0m [36mreward_signature[0m=[35mSignature(dtype=[dtype('float64')], shape=[(1,)])[0m
+[2m2026-01-31 15:28.37[0m [[32m[1minfo     [0m] [1mAction-space has been automatically determined.[0m [36maction_space[0m=[35m<ActionSpace.DISCRETE: 2>[0m
+[2m2026-01-31 15:28.37[0m [[32m[1minfo     [0m] [1mAction size has been automatically determined.[0m [36maction_size[0m=[35m5[0m
+2026-01-31 15:28:37,854 - INFO - Loaded dataset from /home/eyal.amdur/K2D/results/data/ground_truth_10.h5
+[2m2026-01-31 15:28.37[0m [[32m[1minfo     [0m] [1mdataset info                  [0m [36mdataset_info[0m=[35mDatasetInfo(observation_signature=Signature(dtype=[dtype('int32')], shape=[(6,)]), action_signature=Signature(dtype=[dtype('int64')], shape=[(1,)]), reward_signature=Signature(dtype=[dtype('float64')], shape=[(1,)]), action_space=<ActionSpace.DISCRETE: 2>, action_size=5)[0m
+[2m2026-01-31 15:28.37[0m [[32m[1mdebug    [0m] [1mBuilding models...            [0m
+[2m2026-01-31 15:28.37[0m [[32m[1mdebug    [0m] [1mModels have been built.       [0m
+[2m2026-01-31 15:28.37[0m [[32m[1minfo     [0m] [1mDirectory is created at logs/quality/dt_ground_truth_10/DiscreteDecisionTransformer_20260131152837[0m
+[2m2026-01-31 15:28.37[0m [[32m[1minfo     [0m] [1mParameters                    [0m [36mparams[0m=[35m{'observation_shape': [6], 'action_size': 5, 'config': {'type': 'discrete_decision_transformer', 'params': {'batch_size': 64, 'gamma': 0.99, 'observation_scaler': {'type': 'none', 'params': {}}, 'action_scaler': {'type': 'none', 'params': {}}, 'reward_scaler': {'type': 'none', 'params': {}}, 'compile_graph': False, 'context_size': 10, 'max_timestep': 1000, 'learning_rate': 0.0001, 'encoder_factory': {'type': 'default', 'params': {'activation': 'relu', 'use_batch_norm': False, 'dropout_rate': None}}, 'optim_factory': {'type': 'adam', 'params': {'clip_grad_norm': None, 'lr_scheduler_factory': {'type': 'none', 'params': {}}, 'betas': [0.9, 0.999], 'eps': 1e-08, 'weight_decay': 0, 'amsgrad': False}}, 'num_heads': 8, 'num_layers': 6, 'attn_dropout': 0.1, 'resid_dropout': 0.1, 'embed_dropout': 0.1, 'activation_type': 'gelu', 'embed_activation_type': 'tanh', 'position_encoding_type': <PositionEncodingType.GLOBAL: 'global'>, 'warmup_tokens': 10240, 'final_tokens': 30000000}}}[0m
+[2m2026-01-31 15:30.14[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131152837: epoch=1 step=100[0m [36mepoch[0m=[35m1[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.0030864524841308595, 'time_algorithm_update': 0.9658793067932129, 'loss': 0.23404802955687046, 'learning_rate': 9.182443052803692e-05, 'time_step': 0.9690578937530517}[0m [36mstep[0m=[35m100[0m
+[2m2026-01-31 15:30.15[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_ground_truth_10/DiscreteDecisionTransformer_20260131152837/model_100.d3[0m
+[2m2026-01-31 15:31.50[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131152837: epoch=2 step=200[0m [36mepoch[0m=[35m2[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.002841525077819824, 'time_algorithm_update': 0.9477689862251282, 'loss': 0.03105036639608443, 'learning_rate': 9.999826000504695e-05, 'time_step': 0.950688717365265}[0m [36mstep[0m=[35m200[0m
+[2m2026-01-31 15:31.51[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_ground_truth_10/DiscreteDecisionTransformer_20260131152837/model_200.d3[0m
+[2m2026-01-31 15:33.26[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131152837: epoch=3 step=300[0m [36mepoch[0m=[35m3[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.002841067314147949, 'time_algorithm_update': 0.94653395652771, 'loss': 0.012079314682632685, 'learning_rate': 9.999481737898738e-05, 'time_step': 0.949453947544098}[0m [36mstep[0m=[35m300[0m
+[2m2026-01-31 15:33.26[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_ground_truth_10/DiscreteDecisionTransformer_20260131152837/model_300.d3[0m
+[2m2026-01-31 15:35.01[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131152837: epoch=4 step=400[0m [36mepoch[0m=[35m4[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.0030053019523620605, 'time_algorithm_update': 0.9461880922317505, 'loss': 0.008188990270718932, 'learning_rate': 9.998948095495404e-05, 'time_step': 0.9492747783660889}[0m [36mstep[0m=[35m400[0m
+[2m2026-01-31 15:35.02[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_ground_truth_10/DiscreteDecisionTransformer_20260131152837/model_400.d3[0m
+[2m2026-01-31 15:36.36[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131152837: epoch=5 step=500[0m [36mepoch[0m=[35m5[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.002820310592651367, 'time_algorithm_update': 0.942788610458374, 'loss': 0.004918529359856621, 'learning_rate': 9.998227317074491e-05, 'time_step': 0.9456889390945434}[0m [36mstep[0m=[35m500[0m
+[2m2026-01-31 15:36.37[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_ground_truth_10/DiscreteDecisionTransformer_20260131152837/model_500.d3[0m
+[2m2026-01-31 15:38.12[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131152837: epoch=6 step=600[0m [36mepoch[0m=[35m6[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.0029683566093444825, 'time_algorithm_update': 0.9491924905776977, 'loss': 0.00330176560790278, 'learning_rate': 9.997317098897294e-05, 'time_step': 0.9522401022911072}[0m [36mstep[0m=[35m600[0m
+[2m2026-01-31 15:38.13[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_ground_truth_10/DiscreteDecisionTransformer_20260131152837/model_600.d3[0m
+[2m2026-01-31 15:39.48[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131152837: epoch=7 step=700[0m [36mepoch[0m=[35m7[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.002811310291290283, 'time_algorithm_update': 0.9521675372123718, 'loss': 0.005205289002042264, 'learning_rate': 9.996220215487546e-05, 'time_step': 0.9550586104393005}[0m [36mstep[0m=[35m700[0m
+[2m2026-01-31 15:39.49[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_ground_truth_10/DiscreteDecisionTransformer_20260131152837/model_700.d3[0m
+[2m2026-01-31 15:41.24[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131152837: epoch=8 step=800[0m [36mepoch[0m=[35m8[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.0029529404640197755, 'time_algorithm_update': 0.9547455334663391, 'loss': 0.0013898730487562716, 'learning_rate': 9.99493298826832e-05, 'time_step': 0.9577779054641724}[0m [36mstep[0m=[35m800[0m
+[2m2026-01-31 15:41.25[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_ground_truth_10/DiscreteDecisionTransformer_20260131152837/model_800.d3[0m
+[2m2026-01-31 15:43.01[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131152837: epoch=9 step=900[0m [36mepoch[0m=[35m9[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.002837371826171875, 'time_algorithm_update': 0.9547448635101319, 'loss': 0.00088468374859076, 'learning_rate': 9.993460760566135e-05, 'time_step': 0.9576665878295898}[0m [36mstep[0m=[35m900[0m
+[2m2026-01-31 15:43.01[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_ground_truth_10/DiscreteDecisionTransformer_20260131152837/model_900.d3[0m
+[2m2026-01-31 15:44.36[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131152837: epoch=10 step=1000[0m [36mepoch[0m=[35m10[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.0028801822662353517, 'time_algorithm_update': 0.9422649264335632, 'loss': 0.0021372912073275075, 'learning_rate': 9.991801722433054e-05, 'time_step': 0.9452235317230224}[0m [36mstep[0m=[35m1000[0m
+[2m2026-01-31 15:44.36[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_ground_truth_10/DiscreteDecisionTransformer_20260131152837/model_1000.d3[0m
+2026-01-31 15:44:36,884 - INFO - Saved DT model to /home/eyal.amdur/K2D/results/models/DT/quality/dt_model_ground_truth_10.d3
+DT Model saved to: /home/eyal.amdur/K2D/results/models/DT/quality/dt_model_ground_truth_10.d3
+
+--- Training DT on half_truth_10 ---
+2026-01-31 15:44:36,888 - INFO - Starting DT Training...
+[2m2026-01-31 15:44.37[0m [[32m[1minfo     [0m] [1mSignatures have been automatically determined.[0m [36maction_signature[0m=[35mSignature(dtype=[dtype('int64')], shape=[(1,)])[0m [36mobservation_signature[0m=[35mSignature(dtype=[dtype('int32')], shape=[(6,)])[0m [36mreward_signature[0m=[35mSignature(dtype=[dtype('float64')], shape=[(1,)])[0m
+[2m2026-01-31 15:44.37[0m [[32m[1minfo     [0m] [1mAction-space has been automatically determined.[0m [36maction_space[0m=[35m<ActionSpace.DISCRETE: 2>[0m
+[2m2026-01-31 15:44.37[0m [[32m[1minfo     [0m] [1mAction size has been automatically determined.[0m [36maction_size[0m=[35m5[0m
+2026-01-31 15:44:38,093 - INFO - Loaded dataset from /home/eyal.amdur/K2D/results/data/half_truth_10.h5
+[2m2026-01-31 15:44.38[0m [[32m[1minfo     [0m] [1mdataset info                  [0m [36mdataset_info[0m=[35mDatasetInfo(observation_signature=Signature(dtype=[dtype('int32')], shape=[(6,)]), action_signature=Signature(dtype=[dtype('int64')], shape=[(1,)]), reward_signature=Signature(dtype=[dtype('float64')], shape=[(1,)]), action_space=<ActionSpace.DISCRETE: 2>, action_size=5)[0m
+[2m2026-01-31 15:44.38[0m [[32m[1mdebug    [0m] [1mBuilding models...            [0m
+[2m2026-01-31 15:44.38[0m [[32m[1mdebug    [0m] [1mModels have been built.       [0m
+[2m2026-01-31 15:44.38[0m [[32m[1minfo     [0m] [1mDirectory is created at logs/quality/dt_half_truth_10/DiscreteDecisionTransformer_20260131154438[0m
+[2m2026-01-31 15:44.38[0m [[32m[1minfo     [0m] [1mParameters                    [0m [36mparams[0m=[35m{'observation_shape': [6], 'action_size': 5, 'config': {'type': 'discrete_decision_transformer', 'params': {'batch_size': 64, 'gamma': 0.99, 'observation_scaler': {'type': 'none', 'params': {}}, 'action_scaler': {'type': 'none', 'params': {}}, 'reward_scaler': {'type': 'none', 'params': {}}, 'compile_graph': False, 'context_size': 10, 'max_timestep': 1000, 'learning_rate': 0.0001, 'encoder_factory': {'type': 'default', 'params': {'activation': 'relu', 'use_batch_norm': False, 'dropout_rate': None}}, 'optim_factory': {'type': 'adam', 'params': {'clip_grad_norm': None, 'lr_scheduler_factory': {'type': 'none', 'params': {}}, 'betas': [0.9, 0.999], 'eps': 1e-08, 'weight_decay': 0, 'amsgrad': False}}, 'num_heads': 8, 'num_layers': 6, 'attn_dropout': 0.1, 'resid_dropout': 0.1, 'embed_dropout': 0.1, 'activation_type': 'gelu', 'embed_activation_type': 'tanh', 'position_encoding_type': <PositionEncodingType.GLOBAL: 'global'>, 'warmup_tokens': 10240, 'final_tokens': 30000000}}}[0m
+[2m2026-01-31 15:46.13[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131154438: epoch=1 step=100[0m [36mepoch[0m=[35m1[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.0027927279472351072, 'time_algorithm_update': 0.951869032382965, 'loss': 1.2136144936084747, 'learning_rate': 9.188028237634357e-05, 'time_step': 0.9547413039207459}[0m [36mstep[0m=[35m100[0m
+[2m2026-01-31 15:46.14[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_half_truth_10/DiscreteDecisionTransformer_20260131154438/model_100.d3[0m
+[2m2026-01-31 15:47.48[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131154438: epoch=2 step=200[0m [36mepoch[0m=[35m2[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.0028374910354614256, 'time_algorithm_update': 0.9403309726715088, 'loss': 1.1004419094324112, 'learning_rate': 9.999820633664235e-05, 'time_step': 0.9432456374168396}[0m [36mstep[0m=[35m200[0m
+[2m2026-01-31 15:47.49[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_half_truth_10/DiscreteDecisionTransformer_20260131154438/model_200.d3[0m
+[2m2026-01-31 15:49.24[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131154438: epoch=3 step=300[0m [36mepoch[0m=[35m3[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.0028308749198913572, 'time_algorithm_update': 0.9431698656082154, 'loss': 1.091624802350998, 'learning_rate': 9.999467139401096e-05, 'time_step': 0.9460781240463256}[0m [36mstep[0m=[35m300[0m
+[2m2026-01-31 15:49.24[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_half_truth_10/DiscreteDecisionTransformer_20260131154438/model_300.d3[0m
+[2m2026-01-31 15:50.59[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131154438: epoch=4 step=400[0m [36mepoch[0m=[35m4[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.002832047939300537, 'time_algorithm_update': 0.9421460771560669, 'loss': 1.0606521821022035, 'learning_rate': 9.998918257377207e-05, 'time_step': 0.9450553345680237}[0m [36mstep[0m=[35m400[0m
+[2m2026-01-31 15:50.59[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_half_truth_10/DiscreteDecisionTransformer_20260131154438/model_400.d3[0m
+[2m2026-01-31 15:52.34[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131154438: epoch=5 step=500[0m [36mepoch[0m=[35m5[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.0028357768058776857, 'time_algorithm_update': 0.941473217010498, 'loss': 1.0439091992378235, 'learning_rate': 9.998181509902676e-05, 'time_step': 0.9443874740600586}[0m [36mstep[0m=[35m500[0m
+[2m2026-01-31 15:52.34[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_half_truth_10/DiscreteDecisionTransformer_20260131154438/model_500.d3[0m
+[2m2026-01-31 15:54.08[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131154438: epoch=6 step=600[0m [36mepoch[0m=[35m6[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.0028179240226745604, 'time_algorithm_update': 0.9421830153465272, 'loss': 1.0379909181594849, 'learning_rate': 9.997250046086051e-05, 'time_step': 0.9450786399841309}[0m [36mstep[0m=[35m600[0m
+[2m2026-01-31 15:54.09[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_half_truth_10/DiscreteDecisionTransformer_20260131154438/model_600.d3[0m
+[2m2026-01-31 15:55.42[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131154438: epoch=7 step=700[0m [36mepoch[0m=[35m7[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.002833075523376465, 'time_algorithm_update': 0.9313034129142761, 'loss': 1.0513980650901795, 'learning_rate': 9.996125743370973e-05, 'time_step': 0.9342150187492371}[0m [36mstep[0m=[35m700[0m
+[2m2026-01-31 15:55.43[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_half_truth_10/DiscreteDecisionTransformer_20260131154438/model_700.d3[0m
+[2m2026-01-31 15:57.16[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131154438: epoch=8 step=800[0m [36mepoch[0m=[35m8[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.0028198099136352538, 'time_algorithm_update': 0.9309697675704957, 'loss': 1.045228250026703, 'learning_rate': 9.994808057431515e-05, 'time_step': 0.9338679194450379}[0m [36mstep[0m=[35m800[0m
+[2m2026-01-31 15:57.17[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_half_truth_10/DiscreteDecisionTransformer_20260131154438/model_800.d3[0m
+[2m2026-01-31 15:58.50[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131154438: epoch=9 step=900[0m [36mepoch[0m=[35m9[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.002818453311920166, 'time_algorithm_update': 0.9311192655563354, 'loss': 1.052846333384514, 'learning_rate': 9.993294394772544e-05, 'time_step': 0.9340195226669311}[0m [36mstep[0m=[35m900[0m
+[2m2026-01-31 15:58.51[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_half_truth_10/DiscreteDecisionTransformer_20260131154438/model_900.d3[0m
+[2m2026-01-31 16:00.25[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131154438: epoch=10 step=1000[0m [36mepoch[0m=[35m10[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.002846813201904297, 'time_algorithm_update': 0.9346257710456848, 'loss': 1.0319416666030883, 'learning_rate': 9.991598474525648e-05, 'time_step': 0.9375531697273254}[0m [36mstep[0m=[35m1000[0m
+[2m2026-01-31 16:00.25[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_half_truth_10/DiscreteDecisionTransformer_20260131154438/model_1000.d3[0m
+2026-01-31 16:00:25,694 - INFO - Saved DT model to /home/eyal.amdur/K2D/results/models/DT/quality/dt_model_half_truth_10.d3
+DT Model saved to: /home/eyal.amdur/K2D/results/models/DT/quality/dt_model_half_truth_10.d3
+
+--- Training DT on random_10 ---
+2026-01-31 16:00:25,699 - INFO - Starting DT Training...
+[2m2026-01-31 16:00.26[0m [[32m[1minfo     [0m] [1mSignatures have been automatically determined.[0m [36maction_signature[0m=[35mSignature(dtype=[dtype('int64')], shape=[(1,)])[0m [36mobservation_signature[0m=[35mSignature(dtype=[dtype('int32')], shape=[(6,)])[0m [36mreward_signature[0m=[35mSignature(dtype=[dtype('float64')], shape=[(1,)])[0m
+[2m2026-01-31 16:00.26[0m [[32m[1minfo     [0m] [1mAction-space has been automatically determined.[0m [36maction_space[0m=[35m<ActionSpace.DISCRETE: 2>[0m
+[2m2026-01-31 16:00.26[0m [[32m[1minfo     [0m] [1mAction size has been automatically determined.[0m [36maction_size[0m=[35m5[0m
+2026-01-31 16:00:26,673 - INFO - Loaded dataset from /home/eyal.amdur/K2D/results/data/random_10.h5
+[2m2026-01-31 16:00.26[0m [[32m[1minfo     [0m] [1mdataset info                  [0m [36mdataset_info[0m=[35mDatasetInfo(observation_signature=Signature(dtype=[dtype('int32')], shape=[(6,)]), action_signature=Signature(dtype=[dtype('int64')], shape=[(1,)]), reward_signature=Signature(dtype=[dtype('float64')], shape=[(1,)]), action_space=<ActionSpace.DISCRETE: 2>, action_size=5)[0m
+[2m2026-01-31 16:00.26[0m [[32m[1mdebug    [0m] [1mBuilding models...            [0m
+[2m2026-01-31 16:00.26[0m [[32m[1mdebug    [0m] [1mModels have been built.       [0m
+[2m2026-01-31 16:00.26[0m [[32m[1minfo     [0m] [1mDirectory is created at logs/quality/dt_random_10/DiscreteDecisionTransformer_20260131160026[0m
+[2m2026-01-31 16:00.26[0m [[32m[1minfo     [0m] [1mParameters                    [0m [36mparams[0m=[35m{'observation_shape': [6], 'action_size': 5, 'config': {'type': 'discrete_decision_transformer', 'params': {'batch_size': 64, 'gamma': 0.99, 'observation_scaler': {'type': 'none', 'params': {}}, 'action_scaler': {'type': 'none', 'params': {}}, 'reward_scaler': {'type': 'none', 'params': {}}, 'compile_graph': False, 'context_size': 10, 'max_timestep': 1000, 'learning_rate': 0.0001, 'encoder_factory': {'type': 'default', 'params': {'activation': 'relu', 'use_batch_norm': False, 'dropout_rate': None}}, 'optim_factory': {'type': 'adam', 'params': {'clip_grad_norm': None, 'lr_scheduler_factory': {'type': 'none', 'params': {}}, 'betas': [0.9, 0.999], 'eps': 1e-08, 'weight_decay': 0, 'amsgrad': False}}, 'num_heads': 8, 'num_layers': 6, 'attn_dropout': 0.1, 'resid_dropout': 0.1, 'embed_dropout': 0.1, 'activation_type': 'gelu', 'embed_activation_type': 'tanh', 'position_encoding_type': <PositionEncodingType.GLOBAL: 'global'>, 'warmup_tokens': 10240, 'final_tokens': 30000000}}}[0m
+[2m2026-01-31 16:02.01[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131160026: epoch=1 step=100[0m [36mepoch[0m=[35m1[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.0028044962882995605, 'time_algorithm_update': 0.9463234114646911, 'loss': 1.4991372442245483, 'learning_rate': 9.177921092995939e-05, 'time_step': 0.9492073488235474}[0m [36mstep[0m=[35m100[0m
+[2m2026-01-31 16:02.02[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_random_10/DiscreteDecisionTransformer_20260131160026/model_100.d3[0m
+[2m2026-01-31 16:03.38[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131160026: epoch=2 step=200[0m [36mepoch[0m=[35m2[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.0028351211547851564, 'time_algorithm_update': 0.952286262512207, 'loss': 1.4961219322681427, 'learning_rate': 9.999821824017298e-05, 'time_step': 0.9552006959915161}[0m [36mstep[0m=[35m200[0m
+[2m2026-01-31 16:03.38[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_random_10/DiscreteDecisionTransformer_20260131160026/model_200.d3[0m
+[2m2026-01-31 16:05.13[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131160026: epoch=3 step=300[0m [36mepoch[0m=[35m3[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.0028086137771606446, 'time_algorithm_update': 0.9490618991851807, 'loss': 1.4939378094673157, 'learning_rate': 9.999468371408096e-05, 'time_step': 0.9519502997398377}[0m [36mstep[0m=[35m300[0m
+[2m2026-01-31 16:05.14[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_random_10/DiscreteDecisionTransformer_20260131160026/model_300.d3[0m
+[2m2026-01-31 16:06.49[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131160026: epoch=4 step=400[0m [36mepoch[0m=[35m4[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.0028453922271728517, 'time_algorithm_update': 0.9485853695869446, 'loss': 1.4951567125320435, 'learning_rate': 9.99892185977353e-05, 'time_step': 0.951509997844696}[0m [36mstep[0m=[35m400[0m
+[2m2026-01-31 16:06.49[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_random_10/DiscreteDecisionTransformer_20260131160026/model_400.d3[0m
+[2m2026-01-31 16:08.25[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131160026: epoch=5 step=500[0m [36mepoch[0m=[35m5[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.0028359270095825195, 'time_algorithm_update': 0.9479059100151062, 'loss': 1.4893448841571808, 'learning_rate': 9.998184475657582e-05, 'time_step': 0.9508209896087646}[0m [36mstep[0m=[35m500[0m
+[2m2026-01-31 16:08.25[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_random_10/DiscreteDecisionTransformer_20260131160026/model_500.d3[0m
+[2m2026-01-31 16:10.01[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131160026: epoch=6 step=600[0m [36mepoch[0m=[35m6[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.00282254695892334, 'time_algorithm_update': 0.9515373587608338, 'loss': 1.488090113401413, 'learning_rate': 9.997256365732353e-05, 'time_step': 0.954438042640686}[0m [36mstep[0m=[35m600[0m
+[2m2026-01-31 16:10.01[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_random_10/DiscreteDecisionTransformer_20260131160026/model_600.d3[0m
+[2m2026-01-31 16:11.36[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131160026: epoch=7 step=700[0m [36mepoch[0m=[35m7[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.002818458080291748, 'time_algorithm_update': 0.9511495947837829, 'loss': 1.4922391414642333, 'learning_rate': 9.996134016480456e-05, 'time_step': 0.954046540260315}[0m [36mstep[0m=[35m700[0m
+[2m2026-01-31 16:11.37[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_random_10/DiscreteDecisionTransformer_20260131160026/model_700.d3[0m
+[2m2026-01-31 16:13.13[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131160026: epoch=8 step=800[0m [36mepoch[0m=[35m8[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.0028655385971069337, 'time_algorithm_update': 0.9526874351501465, 'loss': 1.4860279166698456, 'learning_rate': 9.994820691775363e-05, 'time_step': 0.9556320977210998}[0m [36mstep[0m=[35m800[0m
+[2m2026-01-31 16:13.13[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_random_10/DiscreteDecisionTransformer_20260131160026/model_800.d3[0m
+[2m2026-01-31 16:14.48[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131160026: epoch=9 step=900[0m [36mepoch[0m=[35m9[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.0028577399253845214, 'time_algorithm_update': 0.9503529834747314, 'loss': 1.484109766483307, 'learning_rate': 9.993321783268819e-05, 'time_step': 0.9532911777496338}[0m [36mstep[0m=[35m900[0m
+[2m2026-01-31 16:14.49[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_random_10/DiscreteDecisionTransformer_20260131160026/model_900.d3[0m
+[2m2026-01-31 16:16.24[0m [[32m[1minfo     [0m] [1mDiscreteDecisionTransformer_20260131160026: epoch=10 step=1000[0m [36mepoch[0m=[35m10[0m [36mmetrics[0m=[35m{'time_sample_batch': 0.0028356003761291506, 'time_algorithm_update': 0.9482331991195678, 'loss': 1.4952555000782013, 'learning_rate': 9.991622852042777e-05, 'time_step': 0.9511486005783081}[0m [36mstep[0m=[35m1000[0m
+[2m2026-01-31 16:16.24[0m [[32m[1minfo     [0m] [1mModel parameters are saved to logs/quality/dt_random_10/DiscreteDecisionTransformer_20260131160026/model_1000.d3[0m
+2026-01-31 16:16:25,111 - INFO - Saved DT model to /home/eyal.amdur/K2D/results/models/DT/quality/dt_model_random_10.d3
+DT Model saved to: /home/eyal.amdur/K2D/results/models/DT/quality/dt_model_random_10.d3
+
+=== Evaluation ===
+
+Evaluating dt_ground_truth_10...
+2026-01-31 16:16:25,522 - INFO - Loaded DT model from /home/eyal.amdur/K2D/results/models/DT/quality/dt_model_ground_truth_10.d3
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  right
+agent's action is:  right
+agent's action is:  right
+agent's action is:  right
+agent's action is:  pick up key
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  right
+agent's action is:  right
+agent's action is:  right
+agent's action is:  right
+2026-01-31 16:16:25,938 - INFO - DT agent's cumulative_reward: 9.469999999999999
+
+Evaluating dt_half_truth_10...
+2026-01-31 16:16:26,203 - INFO - Loaded DT model from /home/eyal.amdur/K2D/results/models/DT/quality/dt_model_half_truth_10.d3
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  right
+agent's action is:  right
+agent's action is:  right
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  right
+agent's action is:  right
+agent's action is:  right
+agent's action is:  right
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+agent's action is:  up
+2026-01-31 16:16:26,660 - INFO - DT agent's cumulative_reward: -0.6000000000000003
+
+Evaluating dt_random_10...
+2026-01-31 16:16:26,918 - INFO - Loaded DT model from /home/eyal.amdur/K2D/results/models/DT/quality/dt_model_random_10.d3
+agent's action is:  right
+agent's action is:  right
+agent's action is:  right
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  right
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  right
+agent's action is:  right
+agent's action is:  down
+agent's action is:  down
+agent's action is:  right
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  right
+agent's action is:  right
+agent's action is:  right
+agent's action is:  down
+agent's action is:  down
+agent's action is:  right
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+agent's action is:  down
+2026-01-31 16:16:27,374 - INFO - DT agent's cumulative_reward: -0.6000000000000003
+
+All evaluations completed successfully!
